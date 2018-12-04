@@ -3,9 +3,9 @@
  import ToolBar from '../Navigation/Toolbar/Toolbar';
  import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
  
- class  Layout extends Component {
+ class Layout extends Component {
     state = {
-        showSideDrawer: true
+        showSideDrawer: false
     }
 
     sideDrawerClosedHandler = () => {

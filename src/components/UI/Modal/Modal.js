@@ -1,17 +1,27 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import classes from './Modal.scss';
 import Backdrop from '../Backdrop/Backdrop';
 
 
-const modal = (props) => (
-    <Fragment>
-        <Backdrop click={props.onModalClose} show={props.show} />
-        <div className={classes.Modal} 
-            style={{ transform: props.show ? 'translateY(0)' : 'translateY(-100vh)',
-                    opacity: props.show ? '1' : '0' }}>
-            { props.children }
-        </div>
-    </Fragment>
-)
+class Modal extends Component {
 
-export default modal;
+    shouldComponentUpdate(nextProps, nextState) {
+        // Re-Renders Slef and Child OrderSummary Component only if "show" is changed
+        return nextProps.show !== this.props.show;
+    }
+
+    render() {
+        return (
+            <Fragment>
+                <Backdrop click={this.props.onModalClose} show={this.props.show} />
+                <div className={classes.Modal} 
+                    style={{ transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
+                            opacity: this.props.show ? '1' : '0' }}>
+                    { this.props.children }
+                </div>
+            </Fragment>
+        );
+    }
+}
+
+export default Modal;
