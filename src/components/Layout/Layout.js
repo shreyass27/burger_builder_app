@@ -1,11 +1,13 @@
  import React, { Fragment } from 'react';
  import classes from './Layout.scss';
+ import ToolBar from '../Navigation/Toolbar/Toolbar';
+ import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
  
  const Layout = (props) => (
      <Fragment>
         <div>
-            ToolBar,
-            SideBAr,
+            <ToolBar />
+            <SideDrawer />
             BackDrop
         </div>
         <main className={classes.mainContent}>
