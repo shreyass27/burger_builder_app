@@ -16,16 +16,23 @@ const INGREDIENT_CONST = {
 
 class BurgerBuilder extends Component {
     state = {
-        ingredients: {
-            salad: 0,
-            bacon: 0,
-            cheese: 0,
-            meat: 0
-        },
+        ingredients: null,
         totalPrice: 4,
         purchasable: false,
         purchaseState: false,
-        loading: false
+        loading: false,
+        error: false
+    };
+
+    
+    componentDidMount() {
+        orderAxios.get('ingredients')
+            .then(response => {
+                    this.setState({ ingredients: response.data, error: false })
+            })
+            .catch( error => {
+                this.setState({ error: true })
+            });
     }
 
     updatePurchaseState() {
@@ -115,11 +122,32 @@ class BurgerBuilder extends Component {
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key]   <= 0;
         }
-        let modalChild = <OrderSummary
+
+        let modalChild = null;
+        let burgerComps = this.state.error ? <p> Ingredients Coould not be loaded </p> : <Spinner />;
+
+        if (this.state.ingredients) {
+            burgerComps = (
+                <Fragment>
+                    <Burger ingredients={this.state.ingredients} />
+                    <BuildControls
+                        addIngredient={this.addIngredient}
+                        removeIngredient={this.removeIngredient}
+                        disabledInfo={disabledInfo}
+                        price={this.state.totalPrice}
+                        purchasable={this.state.purchasable}
+                        purchaseNow={this.purchaseNow}
+                    />
+                </Fragment>
+            );
+
+            modalChild = <OrderSummary
                             price={this.state.totalPrice}
                             cancelPurchase={this.purchaseCalcelhandler}
                             continuePurchase={this.purchaseContinueHandler}
                             ingredients={this.state.ingredients}  />
+        }
+        
         if (this.state.loading) {
             modalChild = <Spinner />;
         }
@@ -130,15 +158,7 @@ class BurgerBuilder extends Component {
                 show={this.state.purchaseState}>
                     {modalChild}
                 </Modal>
-                <Burger ingredients={this.state.ingredients} />
-                <BuildControls
-                    addIngredient={this.addIngredient}
-                    removeIngredient={this.removeIngredient}
-                    disabledInfo={disabledInfo}
-                    price={this.state.totalPrice}
-                    purchasable={this.state.purchasable}
-                    purchaseNow={this.purchaseNow}
-                />
+                {burgerComps}
             </Fragment>
         );
     }

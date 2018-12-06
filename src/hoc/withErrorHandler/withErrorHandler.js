@@ -12,26 +12,33 @@ const withErrorHandler = (WrappedComponent, axios) => {
             this.setState({ modalOpenState: false })
         }
 
-        componentDidMount() {
-            axios.interceptors.request.use(
+        componentWillMount() {
+            this.requestInterceptor = axios.interceptors.request.use(
                 req => {
                     this.setState({
                         error: null
                     });
                     return req;
-                }
-            )
-            axios.interceptors.response.use(
+                },
+                error => Promise.reject(error)
+            );
+            this.responseInterceptor = axios.interceptors.response.use(
                 res => res,
                 error =>  {
                     this.setState({
                         error: error,
                         modalOpenState: true
                     });
-                    return error;
+                    return Promise.reject(error);
                 } 
             )
         }
+
+        componentWillUnmount() {
+            axios.interceptors.request.eject(this.requestInterceptor);
+            axios.interceptors.response.eject(this.responseInterceptor);
+        }
+        
 
         render() {
             return (
@@ -41,7 +48,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
                         show={this.state.modalOpenState}>
                         { this.state.error ? this.state.error.message : null }
                     </Modal>
-                    <WrappedComponent {...this.props} />>
+                    <WrappedComponent {...this.props} />
                 </Fragment>
             )
         }
