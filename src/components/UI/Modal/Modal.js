@@ -7,7 +7,8 @@ class Modal extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         // Re-Renders Slef and Child OrderSummary Component only if "show" is changed
-        return nextProps.show !== this.props.show;
+        return nextProps.show !== this.props.show ||
+                nextProps.children !== this.props.children;
     }
 
     render() {
