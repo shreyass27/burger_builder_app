@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Button from '../../../components/UI/Button/Button';
-// import Spinner from '../../../components/UI/Spinner/Spinner';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 import classes from './ContactData.css';
 import axios from '../../../axiosOrders';
 
@@ -21,7 +21,7 @@ class ContactData extends Component {
         this.setState({ loading: true });
         const order = {
             ingredients: this.props.ingredients,
-            price: this.props.price,
+            totalPrice: this.props.totalPrice,
             customer: {
                 name: 'Max Schwarzmüller',
                 address: {
@@ -44,17 +44,24 @@ class ContactData extends Component {
     }
 
     render() {
+        let formTemplate = (
+            <form>
+                <input className={classes.Input} type="text" name="name" placeholder="Your Name" />
+                <input className={classes.Input} type="email" name="email" placeholder="Your Mail" />
+                <input className={classes.Input} type="text" name="street" placeholder="Street" />
+                <input className={classes.Input} type="text" name="postal" placeholder="Postal Code" />
+                <Button clicked={this.orderHandler} btnType="Success">ORDER</Button>
+            </form>
+        );
+
+        if ( this.state.loading ) {
+            formTemplate = <Spinner />
+        }
+        
         return (
             <div className={classes.ContactData}>
                 <h4>Enter your Contact Data</h4>
-
-                <form>
-                    <input className={classes.Input} type="text" name="name" placeholder="Your Name" />
-                    <input className={classes.Input} type="email" name="email" placeholder="Your Mail" />
-                    <input className={classes.Input} type="text" name="street" placeholder="Street" />
-                    <input className={classes.Input} type="text" name="postal" placeholder="Postal Code" />
-                    <Button btnType="Success">ORDER</Button>
-                </form>
+                {formTemplate}
             </div>
         );
     }
