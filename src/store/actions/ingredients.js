@@ -1,16 +1,18 @@
+import * as actionTypes from './actionTypes';
+
 export const setIngredients = (ingredients) => ({
-    type: 'SET_INGREDIENTS',
+    type: actionTypes.SET_INGREDIENTS,
     ingredients
 });
 
 
 export const setAddIngredient = (ingredientName) => ({
-    type: 'ADD_INGREDIENT',
+    type: actionTypes.ADD_INGREDIENT,
     ingredientName
 });
 
 
 export const setRemoveIngredient = (ingredientName) => ({
-    type: 'REMOVE_INGREDIENT',
+    type: actionTypes.REMOVE_INGREDIENT,
     ingredientName
 });
