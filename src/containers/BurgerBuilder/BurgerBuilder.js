@@ -10,13 +10,6 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from './../../hoc/withErrorHandler/withErrorHandler';
 import { setIngredients, setAddIngredient, setRemoveIngredient } from '../../actions/ingredients';
 
-const INGREDIENT_CONST = {
-    salad: 0.5,
-    bacon: 0.4,
-    cheese: 1.3,
-    meat: 0.7
-};
-
 class BurgerBuilder extends Component {
     state = {
         purchaseState: false,
