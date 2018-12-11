@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react'
+import { connect } from 'react-redux';
+
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
@@ -6,6 +8,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import orderAxios from './../../axiosOrders';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from './../../hoc/withErrorHandler/withErrorHandler';
+import { setIngredients } from '../../actions/ingredients';
 
 const INGREDIENT_CONST = {
     salad: 0.5,
@@ -59,14 +62,19 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        const queryParams = [];
-        for ( let prpty in this.state.ingredients ) {
-            queryParams.push(`${encodeURIComponent(prpty)}=${encodeURIComponent(this.state.ingredients[prpty])}`)
-        }
-        queryParams.push(`price=${this.state.totalPrice}`)
+        // const queryParams = [];
+        // for ( let prpty in this.state.ingredients ) {
+        //     queryParams.push(`${encodeURIComponent(prpty)}=${encodeURIComponent(this.state.ingredients[prpty])}`)
+        // }
+        // queryParams.push(`price=${this.state.totalPrice}`)
+        //     this.props.history.push({
+        //         pathname: '/checkout',
+        //         search: `?${queryParams.join('&')}`
+        //     });
+
+        this.props.setIngredients(this.state.ingredients, this.state.totalPrice);
             this.props.history.push({
                 pathname: '/checkout',
-                search: `?${queryParams.join('&')}`
             });
     }
 
@@ -145,5 +153,14 @@ class BurgerBuilder extends Component {
         );
     }
 }
+
+// const mapStateToProps = (state) => ({
+//     ingredients: state.ingredients
+// });
  
-export default withErrorHandler(BurgerBuilder, orderAxios);
+
+const mapDispatchToProps = (dispatch) => ({
+    setIngredients: (ingredients, totalPrice) => dispatch(setIngredients(ingredients, totalPrice))
+});
+
+export default connect(undefined, mapDispatchToProps)(withErrorHandler(BurgerBuilder, orderAxios));
