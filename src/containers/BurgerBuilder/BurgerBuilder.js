@@ -12,20 +12,12 @@ import { setIngredients, setAddIngredient, setRemoveIngredient } from '../../sto
 
 class BurgerBuilder extends Component {
     state = {
-        purchaseState: false,
-        loading: false,
-        error: false
+        purchaseState: false
     };
 
     
     componentDidMount() {
-        // orderAxios.get('ingredients.json')
-        //     .then(response => {
-        //             this.setState({ ingredients: response.data, error: false })
-        //     })
-        //     .catch( error => {
-        //         this.setState({ error: true })
-        //     });
+        this.props.onSetIngredients();
     }
 
     updatePurchaseState() {
@@ -52,7 +44,6 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        // this.props.onSetIngredients(this.props.ingredients);
             this.props.history.push({
                 pathname: '/checkout',
             });
@@ -66,7 +57,7 @@ class BurgerBuilder extends Component {
         }
 
         let modalChild = null;
-        let burgerComps = this.state.error ? <p> Ingredients Coould not be loaded </p> : <Spinner />;
+        let burgerComps = this.props.error ? <p> Ingredients Coould not be loaded </p> : <Spinner />;
 
         if (this.props.ingredients) {
             burgerComps = (
@@ -89,10 +80,7 @@ class BurgerBuilder extends Component {
                             continuePurchase={this.purchaseContinueHandler}
                             ingredients={this.props.ingredients}  />
         }
-        
-        if (this.state.loading) {
-            modalChild = <Spinner />;
-        }
+
         return (
             <Fragment>
                 <Modal 
@@ -108,12 +96,13 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = (state) => ({
     ingredients: state.ingredient.ingredients,
-    totalPrice: state.ingredient.totalPrice
+    totalPrice: state.ingredient.totalPrice,
+    error: state.ingredient.error
 });
  
 
 const mapDispatchToProps = (dispatch) => ({
-    onSetIngredients: (ingredients) => dispatch(setIngredients(ingredients)),
+    onSetIngredients: () => dispatch(setIngredients()),
     onAddIngredients: (ingredientName) => dispatch(setAddIngredient(ingredientName)),
     onRemoveIngredients: (ingredientName) => dispatch(setRemoveIngredient(ingredientName))
 });
