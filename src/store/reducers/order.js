@@ -29,6 +29,13 @@ const orderReducer = (state = initialState, action) => {
             return addOrder(state, action);
         case actionTypes.PURCHASE_BURGER_FAILED:
             return updateState(state, { loading: false });
+
+        case actionTypes.FETCH_ORDERS_START:
+            return updateState(state, { loading: true });
+        case actionTypes.FETCH_ORDERS_SUCCESS:
+            return updateState(state, { orders: action.orders, loading: false });
+        case actionTypes.FETCH_ORDERS_FAIL:
+            return updateState(state, { loading: false });
         default:
             return state;
     }
