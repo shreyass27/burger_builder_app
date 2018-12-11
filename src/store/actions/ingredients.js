@@ -11,7 +11,7 @@ const fetchIngredientsFailed = () => ({
     type: actionTypes.FETCH_INGREDIENTS_FAILED
 });
 
-export const setIngredients = () => {
+export const initIngredients = () => {
     return (dispatch) => {
         orderAxios.get('ingredients.json')
             .then(response => {
@@ -22,8 +22,6 @@ export const setIngredients = () => {
             });
     }
 };
-
-
 
 export const setAddIngredient = (ingredientName) => ({
     type: actionTypes.ADD_INGREDIENT,
