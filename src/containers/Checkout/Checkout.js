@@ -19,18 +19,17 @@ class Checkout extends Component {
         let summary = <Redirect to="/" />
 
         if (this.props.ingredients && this.props.isPurchasing) {
-        summary = (
-        <Fragment>
-            <CheckoutSummary 
-                checkoutCancelled={this.checkoutCancelledHandler}
-                checkoutContinued={this.checkoutContinuedHandler}
-                ingredients={this.props.ingredients} 
-            />
-            <Route 
-                path={`${this.props.match.path}/contact-data`}exact 
-                component={ContactData} 
-            />
-        </Fragment> )
+        summary = ( <Fragment>
+                        <CheckoutSummary 
+                            checkoutCancelled={this.checkoutCancelledHandler}
+                            checkoutContinued={this.checkoutContinuedHandler}
+                            ingredients={this.props.ingredients} 
+                        />
+                        <Route 
+                            path={`${this.props.match.path}/contact-data`}exact 
+                            component={ContactData} 
+                        />
+                    </Fragment> );
         }
 
         return ( 

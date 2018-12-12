@@ -100,7 +100,10 @@ class Auth extends Component {
     render() {
         
         if (this.props.isAuth) {
-            return (<Redirect to='/' />)
+            console.log(this.props.location)
+            const redirectToString = new URLSearchParams(this.props.location.search).get('redirectTo');
+            const redirectTo = redirectToString ? `/${redirectToString}` : '/';
+            return (<Redirect to={redirectTo} />)
         }
 
         const formElementsArray = [];

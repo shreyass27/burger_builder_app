@@ -31,9 +31,15 @@ class BurgerBuilder extends Component {
     }
 
     purchaseNow = () => {
-        this.setState({
-            purchaseState: true
-        });
+        if (this.props.isAuth) {
+            this.setState({ purchaseState: true });
+        } else {
+            this.props.onPurchaseInit();
+            this.props.history.push({
+                pathname: '/auth',
+                search: '?redirectTo=checkout'
+            });
+        }
     }
 
 
@@ -45,10 +51,8 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        this.props.purchaseInit();
-        this.props.history.push({
-            pathname: '/checkout',
-        });
+        this.props.onPurchaseInit();
+        this.props.history.push('/checkout');
     }
 
     render() {
@@ -72,6 +76,7 @@ class BurgerBuilder extends Component {
                         price={this.props.totalPrice}
                         purchasable={this.updatePurchaseState()}
                         purchaseNow={this.purchaseNow}
+                        isAuth={this.props.isAuth}
                     />
                 </Fragment>
             );
@@ -99,7 +104,8 @@ class BurgerBuilder extends Component {
 const mapStateToProps = (state) => ({
     ingredients: state.ingredient.ingredients,
     totalPrice: state.ingredient.totalPrice,
-    error: state.ingredient.error
+    error: state.ingredient.error,
+    isAuth: state.auth.token !== null
 });
  
 
@@ -107,7 +113,7 @@ const mapDispatchToProps = (dispatch) => ({
     onSetIngredients: () => dispatch(initIngredients()),
     onAddIngredients: (ingredientName) => dispatch(setAddIngredient(ingredientName)),
     onRemoveIngredients: (ingredientName) => dispatch(setRemoveIngredient(ingredientName)),
-    purchaseInit: () => (dispatch(purchaseInit()))
+    onPurchaseInit: () => (dispatch(purchaseInit()))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, orderAxios));
