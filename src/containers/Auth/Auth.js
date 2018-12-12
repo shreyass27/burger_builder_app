@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import classes from './Auth.scss';
@@ -97,6 +98,11 @@ class Auth extends Component {
 
 
     render() {
+        
+        if (this.props.isAuth) {
+            return (<Redirect to='/' />)
+        }
+
         const formElementsArray = [];
         for (let key in this.state.controls) {
             formElementsArray.push({
@@ -138,7 +144,8 @@ class Auth extends Component {
 
 const mapStateToProps = (state) => ({
     loading: state.auth.loading,
-    error: state.auth.error
+    error: state.auth.error,
+    isAuth: state.auth.token !== null
 });
 
 const mapDispatchToProps = (dispatch) => ({
