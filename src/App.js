@@ -1,16 +1,32 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Layout from './containers/Layout/Layout';
 import AppRoutes from './AppRoutes';
+import { authCheckState } from './store/actions/auth';
 class App extends Component {
+  
+  componentDidMount() {
+    this.props.authCheck();  
+  }
+
   render() {
     return (
       <div>
           <Layout>
-            <AppRoutes />
+            <AppRoutes isAuth={this.props.isAuth} />
           </Layout>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  isAuth: state.auth.token !== null
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  authCheck: () => dispatch(authCheckState())
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
