@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import classes from './Auth.scss';
+import { connect } from 'react-redux';
+import { auth } from '../../store/actions/auth';
 
 class Auth extends Component {
     state = {
@@ -23,7 +25,7 @@ class Auth extends Component {
             password: {
                 elementType: 'input',
                 elementConfig: {
-                    type: 'passowrd',
+                    type: 'password',
                     placeholder: 'Enter you password*'
                 },
                 value: '',
@@ -35,11 +37,13 @@ class Auth extends Component {
                 touched: false
             }
         },
-        formIsValid: false
+        formIsValid: false,
+        isSignUp: false
     }
 
-    loginHandler = () => {
-
+    loginHandler = (event) => {
+        event.preventDefault();
+        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignUp);
     }
 
     checkValidity(value, rules) {
@@ -63,6 +67,12 @@ class Auth extends Component {
         }
 
         return isValid;
+    }
+
+    handleSignInSwitch = () => {
+        this.setState( prevstate => ({
+            isSignUp: !prevstate.isSignUp
+        }));
     }
 
     inputChangedHandler = (event, inputIdentifier) => {
@@ -107,15 +117,21 @@ class Auth extends Component {
                 ));
         return (
             <div className={classes.Auth} >
-                <h2>LOGIN</h2>
-                <form onSubmit={this.orderHandler}>
+                <h2>SIGN {this.state.isSignUp ? 'UP' : 'IN'}</h2>
+                <form onSubmit={this.loginHandler}>
                     {form}
-                    {/* disabled={!this.state.formIsValid} */}
-                    <Button btnType="Success" >SUBMIT</Button>
-                </form>            
+                    <Button btnType="Success">SUBMIT</Button>
+                </form>
+                    <Button btnType="Danger" clicked={this.handleSignInSwitch} >SWITCH TO SIGN {
+                        this.state.isSignUp ? 'IN' : 'UP'
+                    }</Button>
             </div>
         )
     }
 }
 
-export default Auth;
+const mapDispatchToProps = (dispatch) => ({
+    onAuth: (email, passowrd, isSignUp) => dispatch(auth(email, passowrd, isSignUp)),
+});
+
+export default connect(undefined, mapDispatchToProps)(Auth);
