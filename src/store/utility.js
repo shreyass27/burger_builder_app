@@ -1,5 +1,5 @@
 
-export const updateState = (state, updateValue) => ({
-    ...state,
+export const updateState = (oldObject, updateValue) => ({
+    ...oldObject,
     ...updateValue
 });
