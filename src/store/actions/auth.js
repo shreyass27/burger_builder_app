@@ -1,19 +1,30 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 
-export const authStart = () => ({
+const authStart = () => ({
     type: actionTypes.AUTH_START
 });
 
-export const authSuccess = (authData) => ({
+const authSuccess = ({ idToken, localId }) => ({
     type: actionTypes.AUTH_SUCCESS,
-    authData
+    idToken,
+    userId: localId
 });
 
-export const authFail = (error) => ({
+const authFail = (error) => ({
     type: actionTypes.AUTH_FAIL,
     error
 });
+
+const authlogout = () => ({
+    type: actionTypes.AUTH_LOGOUT
+});
+
+const checkAuthTimeOut = (exprirationTime) => {
+    return (dispatch) => {
+        setTimeout( () => dispatch(authlogout() ), exprirationTime * 1000 )
+    }
+}
 
 export const auth = (email, password, isSignUp) => {
     return (dispatch) => {
@@ -28,13 +39,11 @@ export const auth = (email, password, isSignUp) => {
         const authMethod = isSignUp ? 'signupNewUser' : 'verifyPassword'
         axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/${authMethod}?key=AIzaSyAr8z91Q_c9XPSqyhq4FRa2VzIHVZ0NeOs`, authData)
             .then(res => {
-                console.log(res);
                 dispatch(authSuccess(res.data));
+                dispatch(checkAuthTimeOut(+res.data.expiresIn));
             })
             .catch(error => {
-                console.log(error);
-                dispatch(authFail(error));
+                dispatch(authFail(error.response.data.error));
             });
     }
 };
-
