@@ -43,6 +43,16 @@ class Auth extends Component {
         isSignUp: false
     }
 
+    componentDidUpdate() {
+        
+        if (this.props.isAuth) {
+            console.log(this.props.location)
+            const redirectToString = new URLSearchParams(this.props.location.search).get('redirectTo');
+            const redirectTo = redirectToString ? `/${redirectToString}` : '/';
+            this.props.history.replace(redirectTo);
+        }
+    }
+
     loginHandler = (event) => {
         event.preventDefault();
         this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignUp);
@@ -98,13 +108,6 @@ class Auth extends Component {
 
 
     render() {
-        
-        if (this.props.isAuth) {
-            console.log(this.props.location)
-            const redirectToString = new URLSearchParams(this.props.location.search).get('redirectTo');
-            const redirectTo = redirectToString ? `/${redirectToString}` : '/';
-            return (<Redirect to={redirectTo} />)
-        }
 
         const formElementsArray = [];
         for (let key in this.state.controls) {

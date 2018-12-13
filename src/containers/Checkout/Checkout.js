@@ -17,7 +17,6 @@ class Checkout extends Component {
 
     render() {
         let summary = <Redirect to="/" />
-
         if (this.props.ingredients && this.props.isPurchasing) {
         summary = ( <Fragment>
                         <CheckoutSummary 

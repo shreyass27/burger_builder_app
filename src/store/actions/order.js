@@ -23,7 +23,9 @@ export const purchaseInit = () => ({
 export const purchaseBurger = (orderData) => {
     return (dispatch, getState) => {
         dispatch(purchaseBurgerStart());
-        orderAxios.post('orders.json?auth=' + getState().auth.token, orderData )
+        const authDetails = getState().auth;
+        orderData.userId = authDetails.userId;
+        orderAxios.post('orders.json?auth=' + authDetails.token, orderData )
             .then( response => {
                 dispatch(purchaseBurgerSuccess(response.data.name, orderData))
             })
@@ -51,7 +53,8 @@ const fetchOrdersFail= (error) => ({
 export const fetchOrders = () => {
     return (dispatch, getState) => {
         dispatch(fetchOrdersStart());
-        orderAxios.get('orders.json?auth=' + getState().auth.token)
+        const authDetails = getState().auth;
+        orderAxios.get('orders.json?auth=' + authDetails.token)
             .then( response => {
                     const fetchOrders = [];
                     for ( let key in response.data) {
