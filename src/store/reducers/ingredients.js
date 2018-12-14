@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { updateState } from '../utility';
+import { updateState } from '../../shared/utility';
 
 const INGREDIENT_CONST = {
     salad: 0.5,
