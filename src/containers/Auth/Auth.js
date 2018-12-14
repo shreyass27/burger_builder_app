@@ -46,7 +46,6 @@ class Auth extends Component {
     componentDidUpdate() {
         
         if (this.props.isAuth) {
-            console.log(this.props.location)
             const redirectToString = new URLSearchParams(this.props.location.search).get('redirectTo');
             const redirectTo = redirectToString ? `/${redirectToString}` : '/';
             this.props.history.replace(redirectTo);
