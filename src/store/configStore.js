@@ -7,7 +7,7 @@ import orderReducer from './reducers/order';
 import authReducer from './reducers/auth';
 
 export default () => {
-    const compomseEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    const compomseEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__  : null || compose;
 
     const rootReducer = combineReducers({
         ingredient: ingredientReducer,
