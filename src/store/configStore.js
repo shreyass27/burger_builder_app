@@ -1,6 +1,7 @@
 
 import { createStore, compose, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
 
 import ingredientReducer from './reducers/ingredients';
 import orderReducer from './reducers/order';
@@ -15,5 +16,7 @@ export default () => {
         auth: authReducer
     });
 
-    return createStore(rootReducer, compomseEnhancers(applyMiddleware(thunk)));
+    const sagaMiddleware = createSagaMiddleware();
+
+    return createStore(rootReducer, compomseEnhancers(applyMiddleware(thunk, sagaMiddleware)));
 }
