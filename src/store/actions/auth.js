@@ -10,22 +10,19 @@ const authFail = (error) => ({
     error
 });
 
-export const authlogout = () => {
-    
-    // localStorage.removeItem('idToken')
-    // localStorage.removeItem('userId');
-    // localStorage.removeItem('exprirationTime');
+export const authlogout = () => ({
+    type: actionTypes.AUTH_INITIATE_LOGOUT
+});
 
-    return {
-        type: actionTypes.AUTH_INITIATE_LOGOUT
-    };
-};
+export const authlogoutSuccess = () => ({
+    type: actionTypes.AUTH_LOGOUT
+});
 
-const checkAuthTimeOut = (exprirationTime) => {
-    return (dispatch) => {
-        setTimeout( () => dispatch(authlogout() ), exprirationTime * 1000 )
-    }
-};
+
+const checkAuthTimeOut = (exprirationTime) => ({
+    type: actionTypes.AUTH_CHECK_TIMEOUT,
+    exprirationTime
+});
 
 const authSuccess = ({ idToken, localId }) => ({
     type: actionTypes.AUTH_SUCCESS,
