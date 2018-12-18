@@ -6,9 +6,12 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import configStore from './store/configStore';
+import configStore, { sagaMiddleware } from './store/configStore';
+import { watchAuth } from './store/sagas';
 
 const store = configStore();
+
+sagaMiddleware.run(watchAuth);
 
 const rootJsx = (<Provider store={store}>
                     <BrowserRouter>

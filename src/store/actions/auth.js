@@ -12,12 +12,12 @@ const authFail = (error) => ({
 
 export const authlogout = () => {
     
-    localStorage.removeItem('idToken')
-    localStorage.removeItem('userId');
-    localStorage.removeItem('exprirationTime');
+    // localStorage.removeItem('idToken')
+    // localStorage.removeItem('userId');
+    // localStorage.removeItem('exprirationTime');
 
     return {
-        type: actionTypes.AUTH_LOGOUT
+        type: actionTypes.AUTH_INITIATE_LOGOUT
     };
 };
 

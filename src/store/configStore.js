@@ -7,6 +7,9 @@ import ingredientReducer from './reducers/ingredients';
 import orderReducer from './reducers/order';
 import authReducer from './reducers/auth';
 
+
+export const sagaMiddleware = createSagaMiddleware();
+
 export default () => {
     const compomseEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__  : null || compose;
 
@@ -16,7 +19,6 @@ export default () => {
         auth: authReducer
     });
 
-    const sagaMiddleware = createSagaMiddleware();
 
     return createStore(rootReducer, compomseEnhancers(applyMiddleware(thunk, sagaMiddleware)));
 }
