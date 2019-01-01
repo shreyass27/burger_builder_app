@@ -7,11 +7,13 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import configStore, { sagaMiddleware } from './store/configStore';
-import { watchAuth } from './store/sagas';
+import { watchAuth, watchIngredients, watchOrders } from './store/sagas';
 
 const store = configStore();
 
 sagaMiddleware.run(watchAuth);
+sagaMiddleware.run(watchIngredients);
+sagaMiddleware.run(watchOrders);
 
 const rootJsx = (<Provider store={store}>
                     <BrowserRouter>
