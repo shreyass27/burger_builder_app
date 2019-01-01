@@ -1,27 +1,17 @@
 import * as actionTypes from './actionTypes';
-import orderAxios from './../../axiosOrders';
 
-const ingredientsAction = (ingredients) => ({
+export const ingredientsAction = (ingredients) => ({
     type: actionTypes.SET_INGREDIENTS,
     ingredients
 });
 
-
-const fetchIngredientsFailed = () => ({
+export const fetchIngredientsFailed = () => ({
     type: actionTypes.FETCH_INGREDIENTS_FAILED
 });
 
-export const initIngredients = () => {
-    return (dispatch) => {
-        orderAxios.get('ingredients.json')
-            .then(response => {
-                dispatch(ingredientsAction(response.data));
-            })
-            .catch( error => {
-                dispatch(fetchIngredientsFailed());
-            });
-    }
-};
+export const initIngredients = () => ({
+    type: actionTypes.INIT_INGREDIENTS
+});
 
 export const setAddIngredient = (ingredientName) => ({
     type: actionTypes.ADD_INGREDIENT,

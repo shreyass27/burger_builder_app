@@ -58,7 +58,7 @@ class Auth extends Component {
     }
 
 
-    handleSignInSwitchcheckValidity = () => {
+    handleSignInSwitch = () => {
         this.setState( prevstate => ({
             isSignUp: !prevstate.isSignUp
         }));
